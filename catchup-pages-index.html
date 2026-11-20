@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catch-up</title>
+<style>
+:root {
+  --bg: #faf9f6; --panel: #ffffff; --ink: #1c1c1a; --muted: #6b6a66; --line: #e5e3dd; --accent: #2f6f4f;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #15160f; --panel: #1d1f17; --ink: #ece9e2; --muted: #a4a299; --line: #30332a; --accent: #6fd39b; color-scheme: dark; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, sans-serif; padding: 0 16px; }
+h1, h2 { font-family: system-ui, -apple-system, sans-serif; }
+a { color: var(--accent); }
+.wrap { max-width: 680px; margin: 0 auto; padding: 56px 0; }
+header.hero { padding: 48px 0 32px; border-bottom: 1px solid var(--line); }
+.mark { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 20px; }
+.mark .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+h1 { font-size: clamp(32px, 6vw, 44px); margin: 18px 0 10px; }
+.sub { color: var(--muted); font-size: 17px; max-width: 48ch; }
+nav.tabs { display: flex; gap: 18px; margin-top: 28px; font-size: 14px; }
+nav.tabs a { text-decoration: none; color: var(--muted); border-bottom: 2px solid transparent; padding-bottom: 4px; }
+nav.tabs a.on { color: var(--ink); border-color: var(--accent); }
+section { padding: 40px 0; border-bottom: 1px solid var(--line); }
+section:last-child { border-bottom: none; }
+section h2 { font-size: 22px; margin-bottom: 14px; }
+section p { margin: 0 0 14px; }
+ul { margin: 0 0 14px; padding-left: 20px; }
+li { margin-bottom: 6px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; margin-bottom: 16px; }
+.muted { color: var(--muted); font-size: 14px; }
+footer { padding: 32px 0 64px; color: var(--muted); font-size: 13px; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="mark"><span class="dot"></span>Catch-up</div>
+    <h1>A private assistant for one person's own inbox.</h1>
+    <p class="sub">Catch-up runs on a single personal Mac. It reads a person's own Gmail, Drive, Calendar and Dropbox so they can ask what changed &mdash; nothing more.</p>
+    <nav class="tabs">
+      <a href="#home" id="nav-home" class="on">Home</a>
+      <a href="#privacy" id="nav-privacy">Privacy policy</a>
+    </nav>
+  </header>
+
+  <section id="home-section">
+    <h2>What Catch-up does</h2>
+    <p>Catch-up is a personal, single-user tool. It checks a person's own Gmail, Google Drive, Google Calendar and Dropbox for new messages, files and events, and lets them ask a local AI model questions like "what's new since yesterday?" &mdash; entirely on their own computer.</p>
+    <div class="card">
+      <strong>Read-only, always.</strong>
+      <p class="muted" style="margin-top:8px">It never sends, replies, deletes or changes anything in any connected account. It only reads what has changed.</p>
+    </div>
+    <div class="card">
+      <strong>Local-only.</strong>
+      <p class="muted" style="margin-top:8px">Everything it fetches is stored on that one Mac. There is no server, no company, and no other user &mdash; it is not a public product, just one person's own tool.</p>
+    </div>
+  </section>
+
+  <section id="privacy-section" hidden>
+    <h2>Privacy policy</h2>
+    <p class="muted">Last updated November 2026.</p>
+    <p>Catch-up is a single-user, personal application. It is not distributed, not offered as a service, and has exactly one user: the person who set it up on their own computer.</p>
+    <h2 style="font-size:17px;margin-top:28px">What it accesses</h2>
+    <ul>
+      <li>Gmail &mdash; read-only, to show new messages (<code>gmail.readonly</code>)</li>
+      <li>Google Drive &mdash; read-only file metadata, in folders the user chooses (<code>drive.metadata.readonly</code>)</li>
+      <li>Google Calendar &mdash; read-only, to show upcoming events (<code>calendar.readonly</code>)</li>
+      <li>Dropbox &mdash; read-only file metadata, in folders the user chooses</li>
+    </ul>
+    <h2 style="font-size:17px;margin-top:28px">Where the data goes</h2>
+    <p>All data stays on the user's own computer, in a local database. Nothing is sent to any third party, any analytics service, or any server operated by anyone other than the user themself. The only outbound calls are the read-only API requests above, made directly from the user's computer to Google and Dropbox, and requests to a locally-running AI model on the same machine.</p>
+    <h2 style="font-size:17px;margin-top:28px">Data retention and deletion</h2>
+    <p>The user controls their own data entirely. They can disconnect any account at any time from the app's own settings, which also revokes Catch-up's access token, and can delete the local database file at any time to remove everything it has stored.</p>
+    <h2 style="font-size:17px;margin-top:28px">Contact</h2>
+    <p>This application has a single developer and user. Questions about this policy can be sent to the developer via their GitHub profile.</p>
+  </section>
+
+  <footer>Catch-up &middot; a personal, single-user tool &middot; not a commercial product</footer>
+</div>
+
+<script>
+function setTab(hash){
+  var priv = hash === '#privacy';
+  document.getElementById('home-section').hidden = priv;
+  document.getElementById('privacy-section').hidden = !priv;
+  document.getElementById('nav-home').classList.toggle('on', !priv);
+  document.getElementById('nav-privacy').classList.toggle('on', priv);
+}
+window.addEventListener('hashchange', function(){ setTab(location.hash); });
+setTab(location.hash || '#home');
+</script>
+</body>
+</html>
